@@ -18,7 +18,7 @@ def counting(request):
     param = request.GET['counter']
     is_init = request.GET['init']
     print(is_init)
-    counter = CounterModel.objects.filter(pk=1)
+    counter = CounterModel.objects.all()
     if counter.count() > 0:
         data = counter[0]
         if not eval(is_init):
@@ -26,7 +26,7 @@ def counting(request):
             data.save()
         number = data.press_count
     else:
-        number = 1
+        number = 0
         CounterModel.objects.create(press_count=number)
     return JsonResponse({'count': number})
 
