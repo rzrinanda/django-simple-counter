@@ -1,0 +1,18 @@
+[[package]]
+name = "django-crispy-forms"
+version = "1.14.0"
+description = "Best way to have Django DRY forms"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[metadata]
+lock-version = "1.1"
+python-versions = "3.10.1"
+content-hash = "bac1e8dfad667cc490b22a0c8dec3485b9bf52803ca7e6e99fb8fac47ba9b832"
+
+[metadata.files]
+django-crispy-forms = [
+    {file = "django-crispy-forms-1.14.0.tar.gz", hash = "sha256:35887b8851a931374dd697207a8f56c57a9c5cb9dbf0b9fa54314da5666cea5b"},
+    {file = "django_crispy_forms-1.14.0-py3-none-any.whl", hash = "sha256:bc4d2037f6de602d39c0bc452ac3029d1f5d65e88458872cc4dbc01c3a400604"},
+]

@@ -1,0 +1,37 @@
+{% extends 'accounts/base.html' %} 
+{% load crispy_forms_tags %} 
+{% block content %}
+<div class="row">
+    
+    <div class="col-md-12">
+      <button
+        class="btn m-auto float-end border border-dark rounded-0"
+        style="background-color: #cae3f5"
+        onClick="location.href='{% url 'home' %}'"
+    >
+      home
+      </button>
+    </div>
+  </div>
+
+
+  <div class="row h-100 justify-content-center align-items-center" style="margin-top: 25vh">
+    <div class="col-10 col-md-8 col-lg-3">
+    <form action="" method="post">
+      {% csrf_token %} {{ form | crispy}}
+      <button
+        class="btn btn-md btn-block px-5 mt-3 m-auto border border-dark rounded-0"
+        style="background-color: #cae3f5;display: block;width:100%"
+      >
+        Register
+      </button>
+      {% if is_exists %}
+            <div class="justify-content-center align-items-center text-danger" style="margin-top: m-auto;" style="display:block;width:100%">Username already exists. <div>
+       {% else %}
+             <div class="justify-content-center align-items-center" style="margin-top: m-auto" style="display:block;width:100%">Have An Account? <a href="{% url 'login' %}">Login</a><div>
+       {% endif %}
+    </form>
+    
+  </div>
+</div>
+{% endblock %}

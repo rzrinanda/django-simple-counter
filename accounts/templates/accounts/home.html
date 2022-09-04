@@ -1,0 +1,116 @@
+{% extends 'accounts/base.html' %} {% block content %}
+<div class="row">
+  <!-- <div class="col-md-8">&nbsp;</div> -->
+  <div class="col-md-12">
+    {% if user.is_authenticated %}
+    <button
+      class="btn m-auto float-end border border-dark rounded-0"
+      style="background-color: #cae3f5"
+      onClick="location.href='{% url 'logout' %}'"
+    >
+      logout
+    </button>
+    {% else %}
+    <button
+      class="btn m-auto float-end border border-dark rounded-0"
+      style="background-color: #cae3f5"
+      onClick="location.href='{% url 'login' %}'"
+    >
+      login/register
+    </button>
+    {% endif %}
+  </div>
+</div>
+<div
+  class="row h-100 justify-content-center align-items-center"
+  style="margin-top: 25vh"
+>
+  <div class="col-10 col-md-8 col-lg-3">
+    <div
+      id="counter"
+      class="m-auto border border-dark rounded-0"
+      style="
+        background-color: #cae3f5;
+        padding: 30vh;
+        font-size: 3.5em;
+        text-align: center;
+      "
+    >
+      {% if request.session.count%} {{request.session.count}} {%else%} 0
+      {%endif%}
+    </div>
+  </div>
+</div>
+
+{% if user.is_authenticated %}
+<div class="row mt-3 h-100 justify-content-center align-items-center">
+  <div class="col-10 col-md-8 col-lg-3">
+    {% comment %}
+    <form method="post">
+      {% endcomment %} {% csrf_token %}
+      <button
+        id="counter-trigger"
+        name="count"
+        class="btn m-auto border border-dark rounded-0 fs-2 px-5"
+        style="background-color: #cae3f5; display: block; width: 100%"
+        width="100%"
+      >
+        PRESS ME
+      </button>
+      {% comment %}
+    </form>
+    {% endcomment %}
+  </div>
+</div>
+{% endif %} {% endblock %} {% block javascript %}
+<script>
+  var clicked = 0;
+  var seconds = 0;
+  var firstClick = true;
+  function ajax_counter(init) {
+    firstClick = false;
+    var numbers = parseInt($("#counter").text());
+
+    if (!eval(init.toLowerCase())) {
+      clicked++;
+    }
+    if (clicked == 1) seconds = 1;
+
+    $.ajaxSetup({
+      headers: { "X-CSRFToken": "{{csrf_token}}" },
+    });
+    $.ajax({
+      type: "GET",
+      url: "{% url 'counting' %}",
+      data: { counter: numbers, init: init },
+      success: function (data) {
+        //console.log(data, data.count);
+        $("#counter").text(data.count);
+      },
+    });
+  }
+
+  $(document).ready(function () {
+    ajax_counter("True");
+    firstClick = true;
+  });
+
+  function startTimer() {
+    setInterval(function () {
+      timer();
+    }, 1000);
+  }
+
+  function timer() {
+    seconds++;
+    if (seconds % 60 == 0) clicked = 0;
+    //console.log(seconds, clicked);
+  }
+
+  $("#counter-trigger").click(function () {
+    //console.log(firstClick);
+    if (firstClick) startTimer();
+    if (clicked < 5) ajax_counter("False");
+  });
+</script>
+{% endblock %}
